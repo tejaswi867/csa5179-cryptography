@@ -1,0 +1,20 @@
+def mod_exp(base, exponent, modulus):
+    result = 1
+    while exponent > 0:
+        if exponent % 2 == 1:
+            result = (result * base) % modulus
+        exponent //= 2
+        base = (base * base) % modulus
+    return result
+def generate_shared_secret(p, g, private_key):
+    return mod_exp(g, private_key, p)
+p = 23
+g = 5
+alice_private_key = 6
+bob_private_key = 15
+alice_public_key = generate_shared_secret(p, g, alice_private_key)
+bob_public_key = generate_shared_secret(p, g, bob_private_key)
+alice_shared_secret = generate_shared_secret(bob_public_key, g, alice_private_key)
+bob_shared_secret = generate_shared_secret(alice_public_key, g, bob_private_key)
+print("Alice's shared secret:", alice_shared_secret)
+print("Bob's shared secret:", bob_shared_secret)
